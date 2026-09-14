@@ -1,5 +1,6 @@
 package com.clinicaveterinaria.huellitas.controller;
 
+import com.clinicaveterinaria.huellitas.enums.ESPECIE;
 import com.clinicaveterinaria.huellitas.model.Mascota;
 import com.clinicaveterinaria.huellitas.service.MascotaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,10 @@ public class MascotaController{
     public ResponseEntity<Mascota> guardar(@RequestBody Mascota mascota) {
         return ResponseEntity.status(HttpStatus.CREATED).body(mascotaService.guardar(mascota));
     }
+    @GetMapping("/ESPECIE/{especie}")
+    public List<Mascota>ListarPorEspecie(@PathVariable ESPECIE especie){
+        return mascotaService.obtenerPorEspecie(especie);
+    }
 
     @GetMapping
     public ResponseEntity<List<Mascota>> obtenerTodas() {
@@ -33,8 +38,6 @@ public class MascotaController{
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
-
 
     @PutMapping("/{id}")
     public ResponseEntity<Mascota> actualizar(@PathVariable Long id, @RequestBody Mascota mascota) {

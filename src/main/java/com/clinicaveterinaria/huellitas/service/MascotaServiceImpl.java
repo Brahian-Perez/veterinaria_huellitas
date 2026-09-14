@@ -1,4 +1,5 @@
 package com.clinicaveterinaria.huellitas.service;
+import com.clinicaveterinaria.huellitas.enums.ESPECIE;
 import com.clinicaveterinaria.huellitas.model.Mascota;
 import com.clinicaveterinaria.huellitas.repository.MascotaRepository;
 import com.clinicaveterinaria.huellitas.service.MascotaService;
@@ -20,6 +21,10 @@ public class MascotaServiceImpl implements MascotaService {
     }
 
     @Override
+    public List<Mascota> obtenerPorEspecie(ESPECIE especie) {
+        return MascotaRepository.findByEspecie(especie);
+    }
+    @Override
     public Optional<Mascota> obtenerPorId(Long id) {
         return MascotaRepository.findById(id);
     }
@@ -32,7 +37,8 @@ public class MascotaServiceImpl implements MascotaService {
     public Mascota actualizar(Long id, Mascota mascota) {
         return MascotaRepository.findById(id).map(m -> {
             m.setNombre(mascota.getNombre());
-            m.setTipo(mascota.getTipo());
+            m.setEspecie(mascota.getEspecie());
+            m.setRaza(mascota.getRaza());
             m.setEdad(mascota.getEdad());
             return MascotaRepository.save(m);
         }).orElseThrow(() -> new RuntimeException("Mascota no encontrada con el id: " + id));
